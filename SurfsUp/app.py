@@ -34,17 +34,82 @@ app = Flask(__name__)
 #################################################
 # Flask Routes
 #################################################
+
+    # def home():
+    # return (
+    #     f"Welcome to the Homepage<br/><br/>"
+    #     f"Available Routes:<br/>"
+    #     f"/api/v1.0/precipitation<br/>"
+    #     f"/api/v1.0/stations<br/>"
+    #     f"/api/v1.0/tobs<br/>"
+    #     f"/api/v1.0/&lt;start&gt;<br/>"
+    #     f"/api/v1.0/&lt;start&gt;/&lt;end&gt;<br/>"
+    # )
+
 @app.route('/')
 def home():
-    return (
-        f"Welcome to the Homepage<br/><br/>"
-        f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation<br/>"
-        f"/api/v1.0/stations<br/>"
-        f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/&lt;start&gt;<br/>"
-        f"/api/v1.0/&lt;start&gt;/&lt;end&gt;<br/>"
-    )
+    return '''
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    background-color: #f2f2f2;
+                }
+
+                h1 {
+                    color: #337ab7;
+                    margin-top: 50px;
+                }
+
+                p {
+                    color: #777;
+                    font-size: 18px;
+                }
+
+                .route {
+                    margin-top: 30px;
+                    display: inline-block;
+                    background-color: #337ab7;
+                    color: #fff;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                .route:hover {
+                    background-color: #23527c;
+                }
+
+                .directions {
+                    color: #777;
+                    font-size: 16px;
+                    margin-top: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Welcome to the Homepage!</h1>
+            <p>Available Routes:</p>
+            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
+            <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
+            <br>
+            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a><br>
+            <p class="directions">Returns a list of stations.</p>
+            <br>
+            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
+            <p class="directions">Returns temperature observations for the most active station in the last 12 months.</p>
+            <br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a><br>
+            <p class="directions">Returns the minimum, average, and maximum temperatures after a start date entered in the YYYY-MM-DD format.</p>
+            <br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a><br>
+            <p class="directions">Returns the minimum, average, and maximum temperatures between start and end dates entered in the YYYY-MM-DD format</p>
+        </body>
+        </html>
+    '''
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Calculate the date one year from the last date in the data set.
@@ -116,11 +181,12 @@ def start(start):
     session = Session(engine)
 
     results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-        filter(Measurement.date == start_date).all()
+    filter(Measurement.date >= start_date).all()
     
     session.close()
-
+    
     min_temp, avg_temp, max_temp = results[0]
+
 
     temp_summary = {
         "TMIN": min_temp,
@@ -129,6 +195,7 @@ def start(start):
     }
 
     return jsonify(temp_summary)
+
 # Define the start-end route
 @app.route("/api/v1.0/<start>/<end>")
 def start_end(start, end):
@@ -139,7 +206,7 @@ def start_end(start, end):
     session = Session(engine)
 
     results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-        filter(Measurement.date == start_date, Measurement.date == end_date).all()
+        filter(Measurement.date >= start_date, Measurement.date <= end_date).all()
 
     session.close()
 
