@@ -35,16 +35,16 @@ app = Flask(__name__)
 # Flask Routes
 #################################################
 
-    # def home():
-    # return (
-    #     f"Welcome to the Homepage<br/><br/>"
-    #     f"Available Routes:<br/>"
-    #     f"/api/v1.0/precipitation<br/>"
-    #     f"/api/v1.0/stations<br/>"
-    #     f"/api/v1.0/tobs<br/>"
-    #     f"/api/v1.0/&lt;start&gt;<br/>"
-    #     f"/api/v1.0/&lt;start&gt;/&lt;end&gt;<br/>"
-    # )
+# def home():
+#     return (
+#         f"Welcome to the Homepage<br/><br/>"
+#         f"Available Routes:<br/>"
+#         f"/api/v1.0/precipitation<br/>"
+#         f"/api/v1.0/stations<br/>"
+#         f"/api/v1.0/tobs<br/>"
+#         f"/api/v1.0/&lt;start&gt;<br/>"
+#         f"/api/v1.0/&lt;start&gt;/&lt;end&gt;<br/>"
+#     )
 
 @app.route('/')
 def home():
@@ -54,22 +54,25 @@ def home():
             <style>
                 body {
                     font-family: Arial, sans-serif;
-                    text-align: center;
+                    text-align: left;
                     background-color: #f2f2f2;
                 }
 
                 h1 {
                     color: #337ab7;
                     margin-top: 50px;
+                    text-align: center;
                 }
 
                 p {
-                    color: #777;
-                    font-size: 18px;
+                    color: #000;
+                    font-size: 20px;
+                    margin-top: 10px;
+                    margin-bottom: 0;
                 }
 
                 .route {
-                    margin-top: 30px;
+                    margin-top: 10px;
                     display: inline-block;
                     background-color: #337ab7;
                     color: #fff;
@@ -91,25 +94,31 @@ def home():
             </style>
         </head>
         <body>
-            <h1>Welcome to the Homepage!</h1>
-            <p>Available Routes:</p>
-            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
+            <h1>Welcome to the API Homepage!</h1>
+            <p style="font-size: 24px; font-weight: bold; color: #000;">Available Routes:</p>
+            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a>
+            <br>
             <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
             <br>
-            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a><br>
+            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a>
+            <br>
             <p class="directions">Returns a list of stations.</p>
             <br>
-            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
+            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a>
+            <br>
             <p class="directions">Returns temperature observations for the most active station in the last 12 months.</p>
             <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a><br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a>
+            <br>
             <p class="directions">Returns the minimum, average, and maximum temperatures after a start date entered in the YYYY-MM-DD format.</p>
             <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a><br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a>
+            <br>
             <p class="directions">Returns the minimum, average, and maximum temperatures between start and end dates entered in the YYYY-MM-DD format</p>
         </body>
         </html>
     '''
+
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Calculate the date one year from the last date in the data set.
