@@ -59,31 +59,36 @@ def home():
                 }
 
                 h1 {
-                    color: #337ab7;
+                    font-family: 'Hanalei Fill', cursive;
+                    font-size: 60px;
+                    color: #d4af37;
                     margin-top: 50px;
                     text-align: center;
+                    text-shadow: 2px 2px #8B4513;
                 }
 
                 p {
-                    color: #000;
-                    font-size: 20px;
-                    margin-top: 10px;
-                    margin-bottom: 0;
+                    color: #777;
+                    font-size: 18px;
+                    margin-top: 0; 
                 }
 
                 .route {
-                    margin-top: 10px;
+                    margin-top: 0;
                     display: inline-block;
-                    background-color: #337ab7;
+                    background-color: #d4af37;
                     color: #fff;
                     padding: 10px 20px;
                     border-radius: 5px;
                     text-decoration: none;
                     font-weight: bold;
+                    font-family: cursive;
+                    border: 2px solid #8B4513;
+                    box-shadow: 2px 2px 4px #8B4513;
                 }
 
                 .route:hover {
-                    background-color: #23527c;
+                    background-color: #b38825;
                 }
 
                 .directions {
@@ -92,28 +97,26 @@ def home():
                     margin-top: 10px;
                 }
             </style>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
         </head>
         <body>
-            <h1>Welcome to the API Homepage!</h1>
-            <p style="font-size: 24px; font-weight: bold; color: #000;">Available Routes:</p>
-            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a>
-            <br>
+            <h1>Welcome to the Hawaiian Climate API</h1>
+            <p>Available Routes:</p>
+            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
             <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
             <br>
-            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a>
-            <br>
+            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a><br>
             <p class="directions">Returns a list of stations.</p>
             <br>
-            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a>
-            <br>
+            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
             <p class="directions">Returns temperature observations for the most active station in the last 12 months.</p>
             <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a>
-            <br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a><br>
             <p class="directions">Returns the minimum, average, and maximum temperatures after a start date entered in the YYYY-MM-DD format.</p>
             <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a>
-            <br>
+            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a><br>
             <p class="directions">Returns the minimum, average, and maximum temperatures between start and end dates entered in the YYYY-MM-DD format</p>
         </body>
         </html>
