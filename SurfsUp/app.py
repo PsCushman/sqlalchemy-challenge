@@ -89,7 +89,7 @@ def home():
             <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
         </head>
         <body>
-            <h1>Welcome to the Hawaiian Climate API!</h1>
+            <h1>Welcome to the Hawaiian Climate API</h1>
             <a href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
             <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
             <a href="/api/v1.0/stations">/api/v1.0/stations</a><br>
