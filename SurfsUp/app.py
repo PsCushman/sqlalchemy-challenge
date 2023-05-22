@@ -60,7 +60,7 @@ def home():
 
                 h1 {
                     font-family: 'Hanalei Fill', cursive;
-                    font-size: 60px;
+                    font-size: 40px;
                     color: #d4af37;
                     margin-top: 50px;
                     text-align: center;
@@ -73,27 +73,14 @@ def home():
                     margin-top: 0; 
                 }
 
-                .route {
-                    margin-top: 0;
-                    display: inline-block;
-                    background-color: #d4af37;
-                    color: #fff;
-                    padding: 10px 20px;
-                    border-radius: 5px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    font-family: cursive;
-                    border: 2px solid #8B4513;
-                    box-shadow: 2px 2px 4px #8B4513;
-                }
-
-                .route:hover {
-                    background-color: #b38825;
+                a {
+                    color: #337ab7;
+                    text-decoration: underline;
                 }
 
                 .directions {
                     color: #777;
-                    font-size: 16px;
+                    font-size: 12px;
                     margin-top: 10px;
                 }
             </style>
@@ -102,21 +89,16 @@ def home():
             <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
         </head>
         <body>
-            <h1>Welcome to the Hawaiian Climate API</h1>
-            <p>Available Routes:</p>
-            <a class="route" href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
+            <h1>Welcome to the Hawaiian Climate API!</h1>
+            <a href="/api/v1.0/precipitation">/api/v1.0/precipitation</a><br>
             <p class="directions">Returns precipitation data for 12 months (2016-08-23 to 2017-08-23).</p>
-            <br>
-            <a class="route" href="/api/v1.0/stations">/api/v1.0/stations</a><br>
+            <a href="/api/v1.0/stations">/api/v1.0/stations</a><br>
             <p class="directions">Returns a list of stations.</p>
-            <br>
-            <a class="route" href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
+            <a href="/api/v1.0/tobs">/api/v1.0/tobs</a><br>
             <p class="directions">Returns temperature observations for the most active station in the last 12 months.</p>
-            <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;">/api/v1.0/&lt;start&gt;</a><br>
+            <a href="/api/v1.0/start">/api/v1.0/start</a><br>
             <p class="directions">Returns the minimum, average, and maximum temperatures after a start date entered in the YYYY-MM-DD format.</p>
-            <br>
-            <a class="route" href="/api/v1.0/&lt;start&gt;/&lt;end&gt;">/api/v1.0/&lt;start&gt;/&lt;end&gt;</a><br>
+            <a href="/api/v1.0/start-end">/api/v1.0/start-end</a><br>
             <p class="directions">Returns the minimum, average, and maximum temperatures between start and end dates entered in the YYYY-MM-DD format</p>
         </body>
         </html>
@@ -168,10 +150,12 @@ def stations():
 def tobs():
     """Query the dates and temperature observations of the most-active station for the previous year of data."""
     # Calculate the date one year from the last date in the data set.
-    most_recent_date = '2017-08-23'
+    session = Session(engine)
+
+    most_recent_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
+    most_recent_date = most_recent_date[0]
     one_year_back = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     
-    session = Session(engine)
     most_active_station = 'USC00519281'
     # Query the temperature observations for the most-active station for the previous year
     results = session.query(Measurement.date, Measurement.tobs).\
@@ -192,13 +176,12 @@ def start(start):
 
     session = Session(engine)
 
-    results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-    filter(Measurement.date >= start_date).all()
+    results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs))\
+        .filter(Measurement.date >= start_date).first()
     
     session.close()
     
-    min_temp, avg_temp, max_temp = results[0]
-
+    min_temp, avg_temp, max_temp = results
 
     temp_summary = {
         "TMIN": min_temp,
@@ -218,11 +201,11 @@ def start_end(start, end):
     session = Session(engine)
 
     results = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-        filter(Measurement.date >= start_date, Measurement.date <= end_date).all()
+        filter(Measurement.date >= start_date, Measurement.date <= end_date).first()
 
     session.close()
 
-    min_temp, avg_temp, max_temp = results[0]
+    min_temp, avg_temp, max_temp = results
 
     temp_summary = {
         "TMIN": min_temp,
